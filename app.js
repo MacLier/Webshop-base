@@ -6,7 +6,7 @@ const app = express();
 
 app.set('view engine', 'pug');
 
-const adminData = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const pageNotFound = require('./routes/404PageNotFound')
 
@@ -15,7 +15,7 @@ const pageNotFound = require('./routes/404PageNotFound')
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/admin', adminData.routes);
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use('*', pageNotFound)
 
