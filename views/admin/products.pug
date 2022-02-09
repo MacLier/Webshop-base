@@ -3,4 +3,22 @@ extend ../layouts/main-layout.pug
 block styles
 
 block content
-    h1 Admin's product list
+    main
+        if prods.length > 0
+            .grid
+                each product in prods
+                    - var url = product.imageUrl
+                    - var title = product.title
+                    article.card.product-item
+                        header.card__header 
+                            h1.product__title #{product.title}
+                        .card__image
+                            img(src=url, alt=title)
+                        .card__content 
+                            h2.product__price $#{product.price}
+                            p.product__description #{product.description}
+                        .card__actions
+                            button.btn.bg-warning Edit 
+                            button.btn.bg-inline-danger Delete 
+        else 
+            h1 No Produtcs

@@ -7,11 +7,13 @@ block content
         if prods.length > 0
             .grid
                 each product in prods
+                    - var url = product.imageUrl
+                    - var title = product.title
                     article.card.product-item
                         header.card__header 
                             h1.product__title #{product.title}
                         .card__image
-                            img(src='#{product.imageUrl}', alt='#{product.title}')
+                            img(src=url, alt=title)
                         .card__content 
                             h2.product__price $#{product.price}
                             p.product__description #{product.description}

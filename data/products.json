@@ -1,1 +1,14 @@
-[{"title":"Book of Boba Fett"},{"title":"The mandalorian"}]
+[
+    {
+        "title": "The Book of Boba Fett",
+        "imageUrl": "https://sm.ign.com/ign_hu/screenshot/default/star-wars-the-book-of-boba-fett-sarlacc_cshk.jpg",
+        "description": "A fantastic terminology about the famous bounty hunter Boba Fett",
+        "price": "49.29"
+    },
+    {
+        "title": "The Mandalorian",
+        "imageUrl": "https://www.komar.de/en/media/catalog/product/cache/5/image/9df78eab33525d08d6e5fb8d27136e95/d/x/dx4-085_star_wars_the_mandalorian_big_impaler_interieur_i_web.jpg",
+        "description": "The most realistic bounty hunter.",
+        "price": "98.99"
+    }
+]
