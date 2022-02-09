@@ -14,8 +14,11 @@ const getProductsFromFile = (cb) => {
 const p = path.join(path.dirname(require.main.filename), 'data', 'products.json');
 module.exports = class Product {
 
-    constructor(title) {
+    constructor(title, imageUrl, description, price) {
         this.title = title;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.price = price;
 
     }
 
