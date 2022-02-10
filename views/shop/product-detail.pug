@@ -3,4 +3,12 @@ extend ../layouts/main-layout.pug
 block styles
 
 block content
-    h1 Product detial
+    main.centered 
+        h1 #{product.title}
+        hr
+        div 
+            img(src=product.imageUrl, alt=product.title)
+        h2 #{product.price}
+        p #{product.description}
+        form(action="/cart" method="POST")
+            button.btn(type="submit") Add to Cart
