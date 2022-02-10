@@ -7,17 +7,16 @@ block content
         if prods.length > 0
             .grid
                 each product in prods
-                    - var url = product.imageUrl
-                    - var title = product.title
                     article.card.product-item
                         header.card__header 
                             h1.product__title #{product.title}
                         .card__image
-                            img(src=url, alt=title)
+                            img(src=product.imageUrl, alt=product.title)
                         .card__content 
                             h2.product__price $#{product.price}
                             p.product__description #{product.description}
                         .card__actions
-                            button.btn Add to Cart
+                            form(action="/add-to-cart", method="POST") 
+                                button.btn(type='submit') Add to Cart
         else 
             h1 No Produtcs
