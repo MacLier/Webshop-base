@@ -3,4 +3,18 @@ extend ../layouts/main-layout.pug
 block styles
 
 block content
-    h1 Edit product page
+    main
+        form.product-form( action=editing ? "/admin/edit-product" : "/admin/add-product" method="POST")
+            .form-control
+                label( for="title") Title
+                input( type="text" name="title" value=editing ? product.title : '')#title
+            .form-control
+                label( for="imageUrl") Image URL
+                input( type="text" name="imageUrl" value=editing ? product.imageUrl : '')#imageUrl
+            .form-control
+                label( for="price") Price
+                input( type="number" name="price" step='0.01' value=editing ? product.price : '')#price
+            .form-control
+                label( for="description") Description
+                textarea( name="description" rows='5')#description #{editing ? product.description : ''}
+            button.btn( type="submit") #{editing ? 'Update Product' : 'Add Product'}
