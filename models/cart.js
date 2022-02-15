@@ -37,6 +37,9 @@ module.exports = class Cart {
             }
             const updatedCart = { ...JSON.parse(data) };
             const product = updatedCart.products.find(product => product.id === id);
+            if (!product) {
+                return;
+            }
             const productQty = product.qty;
             updatedCart.products = updatedCart.products.filter(prod => { prod.id !== id })
             updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQty;

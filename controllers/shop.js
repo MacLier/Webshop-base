@@ -31,8 +31,14 @@ exports.getCart = (req, res, next) => {
                 }
             }
             res.render('shop/cart', { pageTitle: 'Cart', path: '/cart', products: cartProducts })
-
         })
+    })
+}
+exports.postCardDeleteProduct = (req, res, next) => {
+    const prodId = req.body.id;
+    Product.findByID(prodId, product => {
+        Cart.deleteProductFromCart(prodId, product.price)
+        res.redirect('/cart');
     })
 }
 exports.postCard = (req, res, next) => {
