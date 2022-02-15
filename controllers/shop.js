@@ -21,7 +21,19 @@ exports.getCheckout = (req, res, next) => {
     res.render('shop/checkout', { pageTitle: 'Checkout', path: '/checkout' })
 }
 exports.getCart = (req, res, next) => {
-    res.render('shop/cart', { pageTitle: 'Cart', path: '/cart' })
+    Cart.getCart(cart => {
+        Product.fetchAll(products => {
+            const cartProducts = [];
+            for (let product of products) {
+                const cartProductData = cart.products.find(prod => prod.id === product.id);
+                if (cartProductData) {
+                    cartProducts.push({ productData: product, qty: cartProductData.qty });
+                }
+            }
+            res.render('shop/cart', { pageTitle: 'Cart', path: '/cart', products: cartProducts })
+
+        })
+    })
 }
 exports.postCard = (req, res, next) => {
     const prodId = req.body.id
