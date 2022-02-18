@@ -1,4 +1,6 @@
 const Product = require("../models/product");
+const mongoDb = require('mongodb');
+const ObjectId = mongoDb.ObjectId;
 
 exports.getAddProduct = (req, res, next) => {
     res.render('admin/edit-product', { pageTitle: 'Add Product', path: '/admin/add-product', editing: false });
@@ -27,7 +29,7 @@ exports.getEditProduct = (req, res, next) => {
         return res.redirect('/');
     }
     const prodId = req.params.id;
-    Product.findByID(prodId)
+    Product.findById(prodId)
         .then(product => {
             if (!product) {
                 return res.redirect('/')
@@ -44,15 +46,21 @@ exports.getEditProduct = (req, res, next) => {
         })
 }
 exports.postEditProduct = (req, res, next) => {
-    const id = req.body.id;
     const updatedTitle = req.body.title;
-    const updatedImageUrl = req.body.imageUrl;
-    const updatedDescription = req.body.description;
     const updatedPrice = req.body.price;
-    const updatedProduct = new Product(id, updatedTitle, updatedImageUrl, updatedDescription, updatedPrice);
-    console.log(req.body);
-    updatedProduct.save()
-    res.redirect('/admin/products');
+    const updatedDescription = req.body.description;
+    const updatedImageUrl = req.body.imageUrl;
+    const prodId = req.body.id;
+
+    const product = new Product(updatedTitle, updatedPrice, updatedDescription, updatedImageUrl, new mongoDb.ObjectId(prodId))
+    product.save()
+        .then(result => {
+            console.log('Updated Product!');
+            res.redirect('/admin/products');
+        })
+        .catch(err => {
+            console.log(err);
+        })
 }
 
 exports.getAdminProducts = (req, res, next) => {    //
