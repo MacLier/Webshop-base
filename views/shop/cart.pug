@@ -4,10 +4,11 @@ block styles
 
 block content
     if products.length > 0
-        ul
+        ul.cart__item-list
             each product of products
-                li
-                    p #{product.productData.title} (#{product.qty})
+                li.cart__item
+                    h1 #{product.title} 
+                    h2 Quantity: #{product.quantity}
                     form(action="/cart-delete-item" method="POST")
                         input(type="hidden" name="id" value=product._id) 
                         button.btn(type="submit") Delete 

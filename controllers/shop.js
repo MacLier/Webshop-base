@@ -42,18 +42,12 @@ exports.getCheckout = (req, res, next) => {
     res.render('shop/checkout', { pageTitle: 'Checkout', path: '/checkout' })
 }
 exports.getCart = (req, res, next) => {
-    Cart.getCart(cart => {
-        Product.fetchAll(products => {
-            const cartProducts = [];
-            for (let product of products) {
-                const cartProductData = cart.products.find(prod => prod.id === product.id);
-                if (cartProductData) {
-                    cartProducts.push({ productData: product, qty: cartProductData.qty });
-                }
-            }
-            res.render('shop/cart', { pageTitle: 'Cart', path: '/cart', products: cartProducts })
+    req.user.getCart()
+        .then(products => {
+            res.render('shop/cart', { pageTitle: 'Cart', path: '/cart', products: products });
         })
-    })
+        .catch(err => console.log(err));
+
 }
 exports.postCardDeleteProduct = (req, res, next) => {
     const prodId = req.body.id;
@@ -70,12 +64,11 @@ exports.postCard = (req, res, next) => {
         .then(product => {
             return req.user.addToCart(product);
         }).then(result => {
-            // console.log(result);
+            res.redirect('/cart');
         })
         .catch(err => {
             console.log(err);
         })
-    res.redirect('/cart');
 }
 exports.getOrders = (req, res, next) => {
     res.render('shop/orders', { pageTitle: 'Orders', path: '/orders' })
