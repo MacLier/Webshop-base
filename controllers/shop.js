@@ -75,7 +75,7 @@ exports.postCard = (req, res, next) => {
         .catch(err => {
             console.log(err);
         })
-    // res.redirect('/cart');
+    res.redirect('/cart');
 }
 exports.getOrders = (req, res, next) => {
     res.render('shop/orders', { pageTitle: 'Orders', path: '/orders' })
