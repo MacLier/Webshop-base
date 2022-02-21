@@ -70,5 +70,16 @@ exports.postCard = (req, res, next) => {
         })
 }
 exports.getOrders = (req, res, next) => {
-    res.render('shop/orders', { pageTitle: 'Orders', path: '/orders' })
+    req.user.getOrders({ include: ['products'] })
+        .then(orders => {
+            res.render('shop/orders', { pageTitle: 'Orders', path: '/orders', orders: orders })
+
+        })
+}
+exports.postOrder = (req, res, next) => {
+    req.user.addOrder()
+        .then(result => {
+            res.redirect('/orders');
+        })
+        .catch(err => console.log(err));
 }
