@@ -51,12 +51,11 @@ exports.getCart = (req, res, next) => {
 }
 exports.postCardDeleteProduct = (req, res, next) => {
     const prodId = req.body.id;
-    // req.user.getCart()
-    // .then(cart.getProducts({}))
-    Product.findByID(prodId, product => {
-        Cart.deleteProductFromCart(prodId, product.price)
-        res.redirect('/cart');
-    })
+    req.user.deleteItemFromCart(prodId)
+        .then(result => {
+            res.redirect('/cart');
+        })
+        .catch(err => console.log(err));
 }
 exports.postCard = (req, res, next) => {
     const prodId = req.body.id;
