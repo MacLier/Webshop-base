@@ -50,7 +50,7 @@ exports.getCheckout = (req, res, next) => {
         })
 }
 exports.getCart = (req, res, next) => {
-    req.session.user.getCart()
+    req.user.getCart()
         .then(products => {
             res.render('shop/cart',
                 {
@@ -65,7 +65,7 @@ exports.getCart = (req, res, next) => {
 }
 exports.postCardDeleteProduct = (req, res, next) => {
     const prodId = req.body.id;
-    req.session.user.deleteItemFromCart(prodId)
+    req.user.deleteItemFromCart(prodId)
         .then(result => {
             res.redirect('/cart');
         })
@@ -75,7 +75,7 @@ exports.postCard = (req, res, next) => {
     const prodId = req.body.id;
     Product.findById(prodId)
         .then(product => {
-            return req.session.user.addToCart(product);
+            return req.user.addToCart(product);
         }).then(result => {
             res.redirect('/cart');
         })
@@ -84,7 +84,7 @@ exports.postCard = (req, res, next) => {
         })
 }
 exports.getOrders = (req, res, next) => {
-    req.session.user.getOrders()
+    req.user.getOrders()
         .then(orders => {
             res.render('shop/orders',
                 {
@@ -97,7 +97,7 @@ exports.getOrders = (req, res, next) => {
         .catch(err => console.log(err));
 }
 exports.postOrder = (req, res, next) => {
-    req.session.user.addOrder()
+    req.user.addOrder()
         .then(result => {
             res.redirect('/orders');
         })
