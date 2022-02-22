@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const session = require('express-session');
 
 const mongoConnect = require('./util/database').mongoConnect;
 const User = require('./models/user');
@@ -18,6 +19,7 @@ const pageNotFound = require('./routes/404PageNotFound');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({ secret: 'bigsecret:D', resave: false, saveUninitialized: false, }))
 
 app.use((req, res, next) => {
     User.findById("6210f9b8f6d296afae3bfe55")
