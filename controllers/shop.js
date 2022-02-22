@@ -8,7 +8,8 @@ exports.getProducts = (req, res, next) => {
             res.render('shop/product-list', {
                 prods: products,
                 pageTitle: 'Products',
-                path: '/products'
+                path: '/products',
+                isAuthenticated: req.isLoggedIn,
             });
         })
         .catch(err => console.log(err));
@@ -20,7 +21,8 @@ exports.getProduct = (req, res, next) => {
             res.render('shop/product-detail', {
                 product: product,
                 pageTitle: product.title,
-                path: '/products'
+                path: '/products',
+                isAuthenticated: req.isLoggedIn,
             });
         })
         .catch(err => console.log(err));
@@ -32,19 +34,31 @@ exports.getIndex = (req, res, next) => {
             res.render('shop/index', {
                 prods: products,
                 pageTitle: 'Shop',
-                path: '/'
+                path: '/',
+                isAuthenticated: req.isLoggedIn,
             })
         })
         .catch(err => console.log(err))
 }
 
 exports.getCheckout = (req, res, next) => {
-    res.render('shop/checkout', { pageTitle: 'Checkout', path: '/checkout' })
+    res.render('shop/checkout',
+        {
+            pageTitle: 'Checkout',
+            path: '/checkout',
+            isAuthenticated: req.isLoggedIn,
+        })
 }
 exports.getCart = (req, res, next) => {
     req.user.getCart()
         .then(products => {
-            res.render('shop/cart', { pageTitle: 'Cart', path: '/cart', products: products });
+            res.render('shop/cart',
+                {
+                    pageTitle: 'Cart',
+                    path: '/cart',
+                    products: products,
+                    isAuthenticated: req.isLoggedIn,
+                });
         })
         .catch(err => console.log(err));
 
@@ -72,7 +86,13 @@ exports.postCard = (req, res, next) => {
 exports.getOrders = (req, res, next) => {
     req.user.getOrders()
         .then(orders => {
-            res.render('shop/orders', { pageTitle: 'Orders', path: '/orders', orders: orders })
+            res.render('shop/orders',
+                {
+                    pageTitle: 'Orders',
+                    path: '/orders',
+                    orders: orders,
+                    isAuthenticated: req.isLoggedIn,
+                })
         })
         .catch(err => console.log(err));
 }
