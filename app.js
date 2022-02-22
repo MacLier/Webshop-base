@@ -29,14 +29,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'bigsecret:D', resave: false, saveUninitialized: false, store: store }))
 
-app.use((req, res, next) => {
-    User.findById("6210f9b8f6d296afae3bfe55")
-        .then(user => {
-            req.user = new User(user.name, user.email, user.cart, user._id)
-            next();
-        })
-        .catch(err => console.log(err));
-})
 
 app.use(authRoutes);
 app.use('/admin', adminRoutes);
