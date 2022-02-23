@@ -6,7 +6,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 
 // const mongoConnect = require('./util/database').mongoConnect;
-// const User = require('./models/user');
+const User = require('./models/user');
 
 const MONGODB_URI = 'mongodb+srv://testadmin:awCWUmGv8Doz6Ph1@parachute.pecmz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
@@ -30,17 +30,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'bigsecret:D', resave: false, saveUninitialized: false, store: store }))
 
-// app.use((req, res, next) => {
-//     if (!req.session.user) {
-//         return next();
-//     }
-//     User.findById(req.session.user._id)
-//         .then(user => {
-//             req.user = user;
-//             next();
-//         })
-//         .catch(err => console.log(err));
-// });
+app.use((req, res, next) => {
+
+    if (!req.session.user) {
+        return next();
+    }
+    User.findById(req.session.user._id)
+        .then(user => {
+            req.user = user;
+            next();
+        })
+        .catch(err => console.log(err));
+});
 
 app.use(authRoutes);
 app.use('/admin', adminRoutes);
@@ -49,6 +50,18 @@ app.use('*', pageNotFound);
 
 mongoose.connect(MONGODB_URI)
     .then(result => {
+        User.findOne().then(user => {
+            if (!user) {
+                const user = new User({
+                    name: 'Sparrow',
+                    email: "captain@test.com",
+                    cart: {
+                        items: []
+                    }
+                });
+                user.save();
+            }
+        });
         app.listen(3000);
     })
     .catch(err => console.log(err));
