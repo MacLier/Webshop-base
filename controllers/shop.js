@@ -50,22 +50,22 @@ exports.getCheckout = (req, res, next) => {
         })
 }
 exports.getCart = (req, res, next) => {
-    req.user.getCart()
-        .then(products => {
-            res.render('shop/cart',
-                {
-                    pageTitle: 'Cart',
-                    path: '/cart',
-                    products: products,
-                    isAuthenticated: req.session.isLoggedIn,
-                });
+    req.user.populate('cart.items.productId')
+        .then(user => {
+            const products = user.cart.items;
+            console.log(products);
+            res.render('shop/cart', {
+                pageTitle: 'Cart',
+                path: '/cart',
+                products: products,
+                isAuthenticated: req.session.isLoggedIn,
+            });
         })
         .catch(err => console.log(err));
-
 }
 exports.postCardDeleteProduct = (req, res, next) => {
     const prodId = req.body.id;
-    req.user.deleteItemFromCart(prodId)
+    req.user.removeFromCart(prodId)
         .then(result => {
             res.redirect('/cart');
         })
