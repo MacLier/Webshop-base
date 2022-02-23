@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 
-const mongoConnect = require('./util/database').mongoConnect;
+// const mongoConnect = require('./util/database').mongoConnect;
 const User = require('./models/user');
 
 const MONGODB_URI = 'mongodb+srv://testadmin:awCWUmGv8Doz6Ph1@parachute.pecmz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
@@ -46,6 +47,8 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use('*', pageNotFound);
 
-mongoConnect(() => {
-    app.listen(3000);
-});
+mongoose.connect(MONGODB_URI)
+    .then(result => {
+        app.listen(3000);
+    })
+    .catch(err => console.log(err));
