@@ -27,11 +27,13 @@ html(lang="en")
                         a(href="/admin/add-product" class=(path === '/admin/add-product' ? 'active': '')) Add Product 
                     li.main-header__item
                         a(href="/admin/products" class=(path === '/admin/products' ? 'active': '')) Admin Products 
-                    ul.main-header__item-list 
-                if !isAuthenticated
+                ul.main-header__item-list 
+                    if !isAuthenticated
                         li.main-header__item 
                             a(href="/login" class=(path === '/login' ? 'active' : '')) Login
-                else
+                        li.main-header__item 
+                            a(href="/signup" class=(path === '/signup' ? 'active' : '')) SignUp
+                    else
                         li.main-header__item 
                             form(action="/logout" method='POST')
                                 button.btn(type='submit') Logout 
