@@ -6,7 +6,8 @@ exports.getLogin = (req, res, next) => {
         pageTitle: 'Login',
         isAuthenticated: req.session.isLoggedIn,
     })
-}
+};
+
 exports.postLogin = (req, res, next) => {
     User.findById("6216518ad1c91acd7492b6bd")
         .then(user => {
@@ -18,10 +19,23 @@ exports.postLogin = (req, res, next) => {
             })
         })
         .catch(err => console.log(err));
+};
+
+exports.getSignup = (req, res, next) => {
+    res.render('auth/signup', {
+        path: '/signup',
+        pageTitle: 'Signup',
+        isAuthenticated: false,
+    });
+};
+
+exports.postSignup = (req, res, next) => {
+
 }
+
 exports.postLogout = (req, res, next) => {
     req.session.destroy((err) => {
         console.log(err);
         res.redirect('/');
     });
-}
+};
