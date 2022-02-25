@@ -50,18 +50,6 @@ app.use('*', pageNotFound);
 
 mongoose.connect(MONGODB_URI)
     .then(result => {
-        User.findOne().then(user => {
-            if (!user) {
-                const user = new User({
-                    name: 'Sparrow',
-                    email: "captain@test.com",
-                    cart: {
-                        items: []
-                    }
-                });
-                user.save();
-            }
-        });
         app.listen(3000);
     })
     .catch(err => console.log(err));
