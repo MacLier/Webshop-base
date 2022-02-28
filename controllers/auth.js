@@ -1,6 +1,9 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const sendGrid = require('@sendgrid/mail');
 
+const key = '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';
+sendGrid.setApiKey(key)
 
 exports.getLogin = (req, res, next) => {
     let message = req.flash('error');
@@ -81,7 +84,17 @@ exports.postSignup = (req, res, next) => {
                     return user.save();
                 })
                 .then(result => {
-                    res.redirect('/login')
+                    return sendGrid.send({
+                        to: email,
+                        from: 'kisszenty@gmail.com',
+                        subject: 'Signup succeeded!',
+                        html: `<h1>You successfully signed up!</h1>`
+                    })
+                        .then(result => {
+                            console.log('email was send!');
+                            res.redirect('/login')
+                        })
+                        .catch(err => console.log(err));
                 });
         })
         .catch(err => console.log(err));
