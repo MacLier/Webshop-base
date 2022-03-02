@@ -25,6 +25,14 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
+    const errors = expressValidator.validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.render('auth/login', {
+            path: '/login',
+            pageTitle: 'Login',
+            errorMessage: errors.array()[0].msg,
+        })
+    }
     User.findOne({ email: email })
         .then(user => {
             if (!user) {

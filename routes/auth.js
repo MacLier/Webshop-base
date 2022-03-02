@@ -10,7 +10,16 @@ router.get('/login', authController.getLogin);
 router.get('/signup', authController.getSignup);
 router.get('/reset', authController.getReset);
 router.get('/reset/:token', authController.getNewPassword);
-router.post('/login', authController.postLogin);
+router.post('/login', [
+    expressValidator
+        .body('email')
+        .isEmail()
+        .withMessage('Please enter a valid email.'),
+    expressValidator
+        .body('password', 'Please enter a password with only numbers and text, min 5 & max 10 characters.')
+        .isLength({ min: 5, max: 10 })
+        .isAlphanumeric()
+], authController.postLogin);
 router.post('/signup', [
     expressValidator.check('email')
         .isEmail()
