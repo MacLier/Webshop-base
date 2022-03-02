@@ -19,7 +19,18 @@ router.post('/signup', [
         'Please enter a password with only numbers and text, min 5 & max 10 characters.'
     )
         .isLength({ min: 5, max: 10 })
-        .isAlphanumeric()
+        .isAlphanumeric(),
+    expressValidator.body(
+        'confirmPassword',
+        'The passwords are not equal.'
+    )
+        .custom((value, { req }) => {
+            if (value !== req.body.password) {
+                throw new Error('Passwords have to match!');
+            } else {
+                return true;
+            }
+        })
 ], authController.postSignup);
 router.post('/logout', authController.postLogout);
 router.post('/reset', authController.postReset);
