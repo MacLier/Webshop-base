@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const sendGrid = require('@sendgrid/mail');
 
+const { validationResult } = require('express-validator/check')
+
 const key = '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';
 sendGrid.setApiKey(key)
 
@@ -69,6 +71,16 @@ exports.postSignup = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors);
+        return res.status(422).render('auth/signup', {
+            path: '/signup',
+            pageTitle: 'Signup',
+            isAuthenticated: false,
+            errorMessage: errors.array()[0].msg,
+        });
+    }
     User.findOne({ email: email })
         .then(userDoc => {
             if (userDoc) {
