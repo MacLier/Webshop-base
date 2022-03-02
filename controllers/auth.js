@@ -70,7 +70,6 @@ exports.getSignup = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
     const errors = expressValidator.validationResult(req);
     if (!errors.isEmpty()) {
         console.log(errors.array());
@@ -81,34 +80,27 @@ exports.postSignup = (req, res, next) => {
             errorMessage: errors.array()[0].msg,
         });
     }
-    User.findOne({ email: email })
-        .then(userDoc => {
-            if (userDoc) {
-                req.flash('error', 'E-mail exist already. Please choose different one.');
-                return res.redirect('/signup');
-            }
-            return bcrypt.hash(password, 12)
-                .then(hashedPassword => {
-                    const user = new User({
-                        email: email,
-                        password: hashedPassword,
-                        cart: { items: [] }
-                    });
-                    return user.save();
-                })
+    bcrypt.hash(password, 12)
+        .then(hashedPassword => {
+            const user = new User({
+                email: email,
+                password: hashedPassword,
+                cart: { items: [] }
+            });
+            return user.save();
+        })
+        .then(result => {
+            return sendGrid.send({
+                to: email,
+                from: 'kisszenty@gmail.com',
+                subject: 'Signup succeeded!',
+                html: `<h1>You successfully signed up!</h1>`
+            })
                 .then(result => {
-                    return sendGrid.send({
-                        to: email,
-                        from: 'kisszenty@gmail.com',
-                        subject: 'Signup succeeded!',
-                        html: `<h1>You successfully signed up!</h1>`
-                    })
-                        .then(result => {
-                            console.log('email was send!');
-                            res.redirect('/login')
-                        })
-                        .catch(err => console.log(err));
-                });
+                    console.log('email was send!');
+                    res.redirect('/login')
+                })
+                .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
 }

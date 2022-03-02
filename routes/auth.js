@@ -1,5 +1,6 @@
 const express = require('express');
 const expressValidator = require('express-validator');
+const User = require('../models/user');
 
 const authController = require('../controllers/auth');
 
@@ -13,7 +14,14 @@ router.post('/login', authController.postLogin);
 router.post('/signup', [
     expressValidator.check('email')
         .isEmail()
-        .withMessage('Please enter a valid email.'),
+        .withMessage('Please enter a valid email.')
+        .custom((value, { req }) => {
+            return User.findOne({ email: value }).then(userDoc => {
+                if (userDoc) {
+                    return Promise.reject('Email exist already, please pick a different one.');
+                }
+            });
+        }),
     expressValidator.body(
         'password',
         'Please enter a password with only numbers and text, min 5 & max 10 characters.'
