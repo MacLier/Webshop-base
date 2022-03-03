@@ -14,11 +14,13 @@ router.post('/login', [
     expressValidator
         .body('email')
         .isEmail()
-        .withMessage('Please enter a valid email.'),
+        .withMessage('Please enter a valid email.')
+        .normalizeEmail(),
     expressValidator
         .body('password', 'Please enter a password with only numbers and text, min 5 & max 10 characters.')
         .isLength({ min: 5, max: 10 })
         .isAlphanumeric()
+        .trim(),
 ], authController.postLogin);
 router.post('/signup', [
     expressValidator.check('email')
@@ -30,13 +32,15 @@ router.post('/signup', [
                     return Promise.reject('Email exist already, please pick a different one.');
                 }
             });
-        }),
+        })
+        .normalizeEmail(),
     expressValidator.body(
         'password',
         'Please enter a password with only numbers and text, min 5 & max 10 characters.'
     )
         .isLength({ min: 5, max: 10 })
-        .isAlphanumeric(),
+        .isAlphanumeric()
+        .trim(),
     expressValidator.body(
         'confirmPassword',
         'The passwords are not equal.'
