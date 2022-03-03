@@ -3,20 +3,21 @@ extend ../layouts/main-layout.pug
 block styles
 
 block content
+
+    -   var validEmail =  validationErrors.find(e => e.param === 'email')? 'invalid' : '';
+    -   var validPassword = validationErrors.find(e=> e.param === 'password') ? 'invalid' : '';
+    -   var validConfirmPassword = validationErrors.find(e=> e.param === 'confirmPassword') ? 'invalid' : '';
     main
         if errorMessage
             .user-message.user-message--error #{errorMessage}
         form.login-form( action="/signup" method="POST")
             .form-control
-                -   var validEmail =  validationErrors.find(e => e.param === 'email')? 'invalid' : '';
                 label( for="email") E-mail
                 input( type="text" name="email" value=oldInput.email  class=validEmail)#email
-            .form-control
-                -   var validPassword = validationErrors.find(e=> e.param === 'password') ? 'invalid' : '';
+            .form-control               
                 label( for="password") Password
                 input( type="password" name="password" value=oldInput.password class=validPassword)#password
-            .form-control 
-                -   var validConfirmPassword = validationErrors.find(e=> e.param === 'confirmPassword') ? 'invalid' : '';
+            .form-control                
                 label( for="confirmPassword") Confirm Password
                 input( type="password" name="confirmPassword" value=oldInput.confirmPassword class=validConfirmPassword)#confirmPassword
             input(type="hidden" name="_csrf" value=csrfToken)

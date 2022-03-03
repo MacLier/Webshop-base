@@ -3,16 +3,18 @@ extend ../layouts/main-layout.pug
 block styles
 
 block content
+    -   let validEmail = validationErrors.find(e => e.param === 'email')? 'invalid' : '';
+    -   let validPassword = validationErrors.find(e => e.param === 'password')? 'invalid' : '';
     main
         if errorMessage
             .user-message.user-message--error #{errorMessage}
         form.login-form( action="/login" method="POST")
             .form-control
                 label( for="email") E-mail
-                input( type="text" name="email")#email
+                input( type="text" name="email" value=oldInput.email class=validEmail)#email
             .form-control
                 label( for="password") Password
-                input( type="password" name="password")#password
+                input( type="password" name="password" class=validPassword)#password
             input(type="hidden" name="_csrf" value=csrfToken)
             button.btn( type="submit") Login
         .centered    
