@@ -3,22 +3,26 @@ extend ../layouts/main-layout.pug
 block styles
 
 block content
+    -   let validTitle=validationErrors.find(e => e.param === 'title')? 'invalid' : '';
+    -   let validImageUrl=validationErrors.find(e => e.param === 'imageUrl')? 'invalid' : '';
+    -   let validPrice=validationErrors.find(e => e.param === 'price')? 'invalid' : '';
+    -   let validDesc=validationErrors.find(e => e.param === 'description')? 'invalid' : '';
     main
         if errorMessage
             .user-message.user-message--error #{errorMessage}
-        form.product-form( action=editing ? "/admin/edit-product" : "/admin/add-product" method="POST")
+        form.product-form( action=editing ? "/admin/edit-product" : "/admin/add-product" method="POST" novalidate)
             .form-control
                 label( for="title") Title
-                input( type="text" name="title" value=editing ? product.title : '')#title
+                input( type="text" name="title" value=editing ? product.title : '' class=validTitle)#title
             .form-control
                 label( for="imageUrl") Image URL
-                input( type="text" name="imageUrl" value=editing ? product.imageUrl : '')#imageUrl
+                input( type="text" name="imageUrl" value=editing ? product.imageUrl : '' class=validImageUrl)#imageUrl
             .form-control
                 label( for="price") Price
-                input( type="number" name="price" step='0.01' value=editing ? product.price : '')#price
+                input( type="number" name="price" step='0.01' value=editing ? product.price : '' class=validPrice)#price
             .form-control
                 label( for="description") Description
-                textarea( name="description" rows='5')#description #{editing ? product.description : ''}
+                textarea( name="description" rows='5' class=validDesc)#description #{editing ? product.description : ''}
             if editing 
                 input(type="hidden" value=product._id name='id')
             input(type="hidden" name="_csrf" value=csrfToken)
