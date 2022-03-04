@@ -32,7 +32,7 @@ exports.postAddProduct = (req, res, next) => {
                 imageUrl: imageUrl,
             },
             errorMessage: errors.array()[0].msg,
-            validationErrors: errors.array() || [],
+            validationErrors: errors.array(),
         });
     }
 
@@ -43,7 +43,7 @@ exports.postAddProduct = (req, res, next) => {
             res.redirect('/admin/products');
         })
         .catch(err => {
-            console.log(err);
+            res.redirect('/500');
         })
 }
 

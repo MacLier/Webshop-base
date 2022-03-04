@@ -24,7 +24,7 @@ app.set('view engine', 'pug');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
-const pageNotFound = require('./routes/404PageNotFound');
+const errorRoutes = require('./routes/error');
 
 
 
@@ -41,10 +41,15 @@ app.use((req, res, next) => {
     }
     User.findById(req.session.user._id)
         .then(user => {
+            if (!user) {
+                return next();
+            }
             req.user = user;
             next();
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            throw new Error(err)
+        });
 });
 
 app.use((req, res, next) => {
@@ -56,7 +61,8 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
-app.use('*', pageNotFound);
+app.get('/500', errorRoutes)
+app.use('*', errorRoutes);
 
 mongoose.connect(MONGODB_URI)
     .then(result => {
