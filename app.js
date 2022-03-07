@@ -24,7 +24,7 @@ app.set('view engine', 'pug');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
-const errorRoutes = require('./routes/error');
+const errorController = require('./controllers/error');
 
 
 
@@ -61,8 +61,13 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
-app.get('/500', errorRoutes)
-app.use('*', errorRoutes);
+app.get('/500', errorController.getErrorPage)
+app.use(errorController.getPageNotFound);
+
+app.use((error, req, res, next) => {
+    // res.status(error.httpStatusCode).render();
+    res.redirect('/500');
+})
 
 mongoose.connect(MONGODB_URI)
     .then(result => {

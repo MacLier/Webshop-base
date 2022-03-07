@@ -1,10 +1,11 @@
-const express = require('express');
+// const express = require('express');
 
-const errorController = require('../controllers/error');
+// const errorController = require('../controllers/error');
 
-const router = express.Router();
+// const router = express.Router();
 
-router.get('/500', errorController.getErrorPage);
-router.get('', errorController.getPageNotFound);
+// exports.get404 = (res, req, next) => {}
+// router.get('/500', errorController.getErrorPage);
+// router.get('', errorController.getPageNotFound);
 
-module.exports = router;
+// module.exports = router;
