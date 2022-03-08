@@ -14,9 +14,12 @@ block content
             .form-control
                 label( for="title") Title
                 input( type="text" name="title" class=validTitle)#title
+            //- .form-control
+            //-     label( for="imageUrl") Image URL
+            //-     input( type="text" name="imageUrl" class=validImageUrl)#imageUrl
             .form-control
-                label( for="imageUrl") Image URL
-                input( type="text" name="imageUrl" class=validImageUrl)#imageUrl
+                label( for="image") Image
+                input( type="file" name="image" value=editing ? product.imageUrl : '' class=validImageUrl)#image
             .form-control
                 label( for="price") Price
                 input( type="number" name="price" step='0.01'  class=validPrice)#price
