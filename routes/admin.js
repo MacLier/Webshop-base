@@ -17,7 +17,6 @@ router.post('/add-product',
             .isString()
             .isLength({ min: 10 })
             .trim(),
-        expValidator.body('imageUrl').isURL(),
         expValidator.body('price').isFloat(),
         expValidator.body('description')
             .isLength({ min: 10 })

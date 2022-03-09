@@ -10,7 +10,7 @@ block content
     main
         if errorMessage
             .user-message.user-message--error #{errorMessage}
-        form.product-form( action="/admin/add-product" method="POST")
+        form.product-form( action="/admin/add-product" method="POST" enctype="multipart/form-data")
             .form-control
                 label( for="title") Title
                 input( type="text" name="title" class=validTitle)#title
@@ -19,7 +19,7 @@ block content
             //-     input( type="text" name="imageUrl" class=validImageUrl)#imageUrl
             .form-control
                 label( for="image") Image
-                input( type="file" name="image" value=editing ? product.imageUrl : '' class=validImageUrl)#image
+                input( type="file" name="image"  class=validImageUrl)#image
             .form-control
                 label( for="price") Price
                 input( type="number" name="price" step='0.01'  class=validPrice)#price
