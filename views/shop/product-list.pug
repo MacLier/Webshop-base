@@ -11,16 +11,17 @@ block content
                         header.card__header 
                             h1.product__title #{product.title}
                         .card__image
-                            img(src=product.imageUrl, alt=product.title)
+                            img(src=`\\`+product.imageUrl, alt=product.title)
                         .card__content 
                             h2.product__price $#{product.price}
                             p.product__description #{product.description}
                         .card__actions
-                            a.btn(href=`/products/${product._id}`) Details
-                        if isAuthenticated
-                            form(action="/cart", method="POST") 
-                                input(type="hidden" name="_csrf" value=csrfToken)
-                                button.btn(type='submit') Add to Cart
-                                input(type="hidden" name='id' value=product._id)
+                            div 
+                                a.btn(href=`/products/${product._id}`) Details
+                            if isAuthenticated
+                                form(action="/cart", method="POST") 
+                                    input(type="hidden" name="_csrf" value=csrfToken)
+                                    button.btn(type='submit') Add to Cart
+                                    input(type="hidden" name='id' value=product._id)
         else 
             h1 No Produtcs
