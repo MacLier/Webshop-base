@@ -148,16 +148,28 @@ exports.postOrder = (req, res, next) => {
 
 exports.getInvoice = (req, res, next) => {
     const orderId = req.params.orderId;
-    const invoiceName = 'invoice-' + orderId + '.pdf';
-    const invoicePath = path.join('data', 'invoices', invoiceName);
-    console.log('invoiceName: ', invoiceName);
-    console.log('invoicePath: ', invoicePath);
-    fs.readFile(invoicePath, (err, data) => {
-        if (err) {
-            return next();
-        }
-        console.log('Eddig megvan!');
-        res.setHeader('Content-Type', 'application/pdf');
-        res.send(data)
-    })
+    Order.findById(orderId)
+        .then(order => {
+            if (!order) {
+                return next(new Error('No order found.'));
+            }
+            if (order.user.userId.toString() !== req.user._id.toString()) {
+                return next(new Error('Unauthorized!'));
+            }
+            const invoiceName = 'invoice-' + orderId + '.pdf';
+            const invoicePath = path.join('data', 'invoices', invoiceName);
+            fs.readFile(invoicePath, (err, data) => {
+                if (err) {
+                    return next();
+                }
+                res.setHeader('Content-Type', 'application/pdf');
+                res.setHeader('Content-Disposition', 'attachment; filename="' + invoiceName + '"');
+                res.send(data);
+            })
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
