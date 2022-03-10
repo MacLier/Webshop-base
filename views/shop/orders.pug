@@ -9,8 +9,9 @@ block content
         ul.orders 
             each order of orders 
                 li.orders__item 
-                    h1 #{order._id}
+                    h1 #{order._id} - 
+                        a(href=`/orders/${order._id}`) Download the invoice
                     ul.orders__products 
                         each product of order.products
-                            li.orders__products-item |Title: #{product.product.title} Quantity: #{product.quantity} -
-                                                     a(href=`/orders/${order._id}`) Download the invoice
+                            li.orders__products-item Title: #{product.product.title} Quantity: #{product.quantity} 
+                                                     
