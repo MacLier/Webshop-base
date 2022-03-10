@@ -146,14 +146,18 @@ exports.postOrder = (req, res, next) => {
         });
 };
 
-exports.getInvoice = (res, req, next) => {
+exports.getInvoice = (req, res, next) => {
     const orderId = req.params.orderId;
     const invoiceName = 'invoice-' + orderId + '.pdf';
     const invoicePath = path.join('data', 'invoices', invoiceName);
+    console.log('invoiceName: ', invoiceName);
+    console.log('invoicePath: ', invoicePath);
     fs.readFile(invoicePath, (err, data) => {
         if (err) {
             return next();
         }
+        console.log('Eddig megvan!');
+        res.setHeader('Content-Type', 'application/pdf');
         res.send(data)
     })
 };
