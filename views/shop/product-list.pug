@@ -16,12 +16,14 @@ block content
                             h2.product__price $#{product.price}
                             p.product__description #{product.description}
                         .card__actions
-                            div 
-                                a.btn(href=`/products/${product._id}`) Details
                             if isAuthenticated
-                                form(action="/cart", method="POST") 
+
+                                form.btn-group(action="/cart", method="POST") 
+                                    a.btn(href=`/products/${product._id}`) Details
                                     input(type="hidden" name="_csrf" value=csrfToken)
                                     button.btn(type='submit') Add to Cart
                                     input(type="hidden" name='id' value=product._id)
+                            else
+                                a.btn(href=`/products/${product._id}`) Details
         else 
             h1 No Produtcs
