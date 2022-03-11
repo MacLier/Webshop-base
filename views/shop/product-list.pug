@@ -25,5 +25,8 @@ block content
                                     input(type="hidden" name='id' value=product._id)
                             else
                                 a.btn(href=`/products/${product._id}`) Details
+            section.pagination
+                a(href="/?page=1") 1 
+                a(href="/?page=2") 2
         else 
             h1 No Produtcs
