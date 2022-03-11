@@ -51,6 +51,7 @@ exports.postAddProduct = (req, res, next) => {
             validationErrors: errors.array(),
         });
     }
+    console.log('Eddig megvan');
     const imageUrl = image.path;
     const product = new Product({ title: title, price: price, description: description, imageUrl: imageUrl, userId: req.user });
     product.save()

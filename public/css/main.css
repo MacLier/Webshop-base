@@ -375,4 +375,5 @@ form {
 .pagination a:hover,
 .pagination a:active {
     background-color: #00695c;
+    color: #ffeb3b;
 }

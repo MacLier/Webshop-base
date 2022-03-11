@@ -5,10 +5,16 @@ const fs = require('fs');
 const path = require('path');
 const PDFDocument = require('pdfkit');
 
+const itemsPerPage = 2;
+
 
 exports.getProducts = (req, res, next) => {
+    const page = req.query.page;
+
     Product.find()
-        .then((products) => {
+        .skip((page - 1) * itemsPerPage)
+        .limit(itemsPerPage)
+        .then(products => {
             res.render('shop/product-list', {
                 prods: products,
                 pageTitle: 'Products',
