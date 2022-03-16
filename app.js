@@ -80,7 +80,7 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
-app.get('/500', errorController.getErrorPage)
+app.get('*', errorController.getErrorPage)
 app.use(errorController.getPageNotFound);
 
 app.use((error, req, res, next) => {

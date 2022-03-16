@@ -26,7 +26,15 @@ block content
                             else
                                 a.btn(href=`/products/${product._id}`) Details
             section.pagination
-                a(href="/products/?page=1") 1 
-                a(href="/products/?page=2") 2
+                if (currentPage !== 1 && previousPage !== 1)
+                    a(href="/products/?page=1") 1 
+                if previousPage
+                    a(href=`/products/?page=${previousPage}`) #{previousPage}
+                a(href=`/products/?page=${currentPage}` class='active') #{currentPage}
+                if hasNextPage
+                    a(href=`/products/?page=${nextPage}`) #{nextPage}
+                if (lastPage !== currentPage && nextPage !== lastPage)
+                    a(href=`/products/?page=${lastPage}`) #{lastPage}
+
         else 
             h1 No Produtcs
