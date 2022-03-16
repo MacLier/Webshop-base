@@ -21,5 +21,15 @@ block content
                                 input(type="hidden" name="_csrf" value=csrfToken)
                                 input(type="hidden" value=product._id, name='id')
                                 button.btn(type="submit") Delete 
+            section.pagination
+                if (currentPage !== 1 && previousPage !== 1)
+                    a(href="/admin/products/?page=1") 1 
+                if previousPage
+                    a(href=`/admin/products/?page=${previousPage}`) #{previousPage}
+                a(href=`/admin/products/?page=${currentPage}` class='active') #{currentPage}
+                if hasNextPage
+                    a(href=`/admin/products/?page=${nextPage}`) #{nextPage}
+                if (lastPage !== currentPage && nextPage !== lastPage)
+                    a(href=`/admin/products/?page=${lastPage}`) #{lastPage}
         else 
             h1 No Produtcs

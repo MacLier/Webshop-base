@@ -2,6 +2,8 @@ const Product = require("../models/product");
 
 const expValidator = require('express-validator');
 
+const itemsPerPage = 1;
+
 exports.getAddProduct = (req, res, next) => {
     res.render('admin/edit-product', {
         pageTitle: 'Add Product',
@@ -142,13 +144,29 @@ exports.postEditProduct = (req, res, next) => {
         });
 };
 
-exports.getAdminProducts = (req, res, next) => {    //
+exports.getAdminProducts = (req, res, next) => {
+    const page = +req.query.page || 1;
+    let totalItems;
     Product.find({ userId: req.user._id })
+        .countDocuments()
+        .then(numProducts => {
+            totalItems = numProducts;
+            return Product.find()
+                .skip((page - 1) * itemsPerPage)
+                .limit(itemsPerPage)
+        })
         .then(products => {
             res.render('admin/products', {
                 prods: products,
                 pageTitle: 'Admin Products',
                 path: '/admin/products',
+                totalProducts: totalItems,
+                currentPage: page,
+                hasNextPage: itemsPerPage * page < totalItems,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1,
+                lastPage: Math.ceil(totalItems / itemsPerPage),
             });
         })
         .catch(err => {
