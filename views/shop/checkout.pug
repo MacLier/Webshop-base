@@ -3,4 +3,11 @@ extend ../layouts/main-layout.pug
 block styles
 
 block content
-    h1 Checkout page
+    ul.cart__item-list
+            each product of products
+                li.cart__item
+                    h1 #{product.productId.title} 
+                    h2 Quantity: #{product.quantity}
+    hr
+    div
+        h2 Total price: #{totalSum}
